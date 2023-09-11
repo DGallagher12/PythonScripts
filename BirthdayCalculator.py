@@ -1,4 +1,5 @@
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 def calculate_age(birthdate):
     today = datetime.today()
@@ -9,20 +10,11 @@ def calculate_age(birthdate):
     # Create a birthdate datetime object for comparison
     birth_date_obj = datetime(birth_year, birth_month, birth_day)
 
-    # Calculate age
-    age_year = today.year - birth_year
-    age_month = today.month - birth_month
-    age_day = today.day - birth_day
-
-    # If the birth day hasn't occurred this month yet, subtract one month
-    if age_day < 0:
-        age_month -= 1
-        age_day += 30  # This is a simplification; some months have 31 days, February might have 28 or 29.
-
-    # If the birth month hasn't occurred this year yet, subtract one year
-    if age_month < 0:
-        age_year -= 1
-        age_month += 12
+    # Calculate the difference in years, months, and days using relativedelta
+    delta = relativedelta(today, birth_date_obj)
+    age_year = delta.years
+    age_month = delta.months
+    age_day = delta.days
 
     return age_year, age_month, age_day
 
